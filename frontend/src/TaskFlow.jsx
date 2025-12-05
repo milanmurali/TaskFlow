@@ -14,10 +14,14 @@ export default function TaskFlow() {
   const [editTaskId, setEditTaskId] = useState(null)
   const [editTitle, setEditTitle] = useState('')
 
+  const [loading, setLoading] = useState(true)
+
   const fetchTasks = async () => {
     try {
+      setLoading(true)
       const response = await axios.get(`${BASE_URL}/task/view`)
       setTasks(response.data)
+      setLoading(false)
     } catch (error) {
       console.log(error);
     }
@@ -91,6 +95,7 @@ export default function TaskFlow() {
 
 
   return (
+
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg border border-gray-100">
 
@@ -135,7 +140,15 @@ export default function TaskFlow() {
             </button>
           ))}
         </div>
+        
 
+        {/* Loading */}
+        {loading && (
+          <div className="flex items-center justify-center h-full">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+          </div>
+        )}
+        
         {/* Task List */}
         <div className="space-y-3">
           {filteredTasks.map((task) => (
