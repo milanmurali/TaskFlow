@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+const BASE_URL = import.meta.env.VITE_BACKEND_API_BASE_URL;
 
 export default function TaskFlow() {
 
@@ -15,7 +16,7 @@ export default function TaskFlow() {
 
   const fetchTasks = async () => {
     try {
-      const response = await axios.get('http://localhost:7000/task/view')
+      const response = await axios.get(`${BASE_URL}/task/view`)
       setTasks(response.data)
     } catch (error) {
       console.log(error);
@@ -25,7 +26,7 @@ export default function TaskFlow() {
   const addTask = async () => {
     if (!newTask.trim()) return;
     try {
-      await axios.post('http://localhost:7000/task/add', { title: newTask })
+      await axios.post(`${BASE_URL}/task/add`, { title: newTask })
       setNewTask('')
       fetchTasks()
     } catch (error) {
@@ -35,7 +36,7 @@ export default function TaskFlow() {
 
   const toggleTask = async (id, currentStatus) => {
     try {
-      await axios.put(`http://localhost:7000/task/update/${id}`, { status: !currentStatus })
+      await axios.put(`${BASE_URL}/task/update/${id}`, { status: !currentStatus })
       fetchTasks()
     } catch (error) {
       console.log(error);
@@ -44,7 +45,7 @@ export default function TaskFlow() {
 
   const deleteTask = async (id) => {
     try {
-      await axios.delete(`http://localhost:7000/task/delete/${id}`)
+      await axios.delete(`${BASE_URL}/task/delete/${id}`)
       fetchTasks()
     } catch (error) {
       console.log(error);
@@ -64,7 +65,7 @@ export default function TaskFlow() {
   const saveTaskUpdate = async () => {
     if (!editTitle.trim()) return;
     try {
-      await axios.put(`http://localhost:7000/task/update/${editTaskId}`, { title: editTitle })
+      await axios.put(`${BASE_URL}/task/update/${editTaskId}`, { title: editTitle })
       setEditTaskId(null)
       setEditTitle('')
       fetchTasks()
